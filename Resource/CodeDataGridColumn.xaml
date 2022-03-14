@@ -1,0 +1,59 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:customDataGrid="clr-namespace:WaybillApp.Common.CustomDataGrid">
+
+    <customDataGrid:DataGridColumnCollection x:Key="CustomersColumnCollection" x:Shared="False">
+        <DataGridTextColumn
+            Binding="{Binding Code}"
+            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+            Header="کد"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding FullName}"
+            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+            Header="نام فرد"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding PhoneNumber}"
+            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+            Header="شماره تلفن"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding NationalId}"
+            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+            Header="کد ملی"
+            IsReadOnly="True" />
+    </customDataGrid:DataGridColumnCollection>
+
+    <customDataGrid:DataGridColumnCollection x:Key="LocationsColumnCollection" x:Shared="False">
+        <DataGridTextColumn
+            Binding="{Binding Code}"
+            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+            Header="کد"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding City}"
+            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+            Header="نام شهر"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding Discharge}"
+            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+            Header="محل تخلیه"
+            IsReadOnly="True" />
+    </customDataGrid:DataGridColumnCollection>
+
+    <customDataGrid:DataGridColumnCollection x:Key="WaresColumnCollection" x:Shared="False">
+        <DataGridTextColumn
+            Binding="{Binding Code}"
+            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+            Header="کد"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding Name}"
+            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+            Header="نام کالا"
+            IsReadOnly="True" />
+    </customDataGrid:DataGridColumnCollection>
+</ResourceDictionary>

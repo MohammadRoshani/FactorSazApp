@@ -1,0 +1,87 @@
+﻿<UserControl
+    x:Class="WaybillApp.View.LoginView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:common="clr-namespace:WaybillApp.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FlowDirection="RightToLeft"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Width="80"
+                    Margin="8"
+                    VerticalAlignment="Center"
+                    Text="نام کاربری :" />
+                <TextBox
+                    Width="176"
+                    Margin="8"
+                    common:FocusAdvancement.AdvancesByEnterKey="True"
+                    FlowDirection="LeftToRight"
+                    Text="{Binding UserName}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Width="80"
+                    Margin="8"
+                    VerticalAlignment="Center"
+                    Text="رمز ورود :" />
+                <TextBox
+                    Width="176"
+                    Margin="8"
+                    common:FocusAdvancement.AdvancesByEnterKey="True"
+                    FlowDirection="LeftToRight"
+                    Text="{Binding Password}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Visibility="{Binding ShowActiveBox, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock
+                    Width="80"
+                    Margin="8"
+                    VerticalAlignment="Center"
+                    Text="فعال ساز :" />
+                <TextBox
+                    Width="176"
+                    Margin="8"
+                    common:FocusAdvancement.AdvancesByEnterKey="True"
+                    FlowDirection="LeftToRight"
+                    Text="{Binding ActiveCode}" />
+            </StackPanel>
+            <Button
+                Height="50"
+                Margin="4"
+                common:FocusAdvancement.AdvancesByEnterKey="True"
+                Command="{Binding LoginCommand}"
+                Content="ورود" />
+            <Button
+                Height="50"
+                Margin="4"
+                common:FocusAdvancement.AdvancesByEnterKey="True"
+                Command="{Binding LoginCommand}"
+                Content="ثبت"
+                Visibility="{Binding ShowActiveBox, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <TextBlock
+                Margin="0,8"
+                Padding="16"
+                Background="Red"
+                Foreground="AliceBlue"
+                Text="نام کاربری / رمز عبور نادرست است."
+                TextAlignment="Center"
+                Visibility="{Binding InvalidLogin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <TextBlock
+                Margin="0,8"
+                Padding="16"
+                Background="Red"
+                Foreground="AliceBlue"
+                Text="برنامه منقضی شده است."
+                TextAlignment="Center"
+                Visibility="{Binding Expired, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,17 @@
+﻿<Window
+    x:Class="WaybillApp.View.PrintWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="پیش نمایش پرینت"
+    Width="900"
+    Height="800"
+    WindowStartupLocation="CenterScreen">
+    <DocumentViewer Document="{Binding}" Style="{DynamicResource DocumentViewerCustomStyle}">
+        <DocumentViewer.Resources>
+            <!--  Hides the search box  -->
+            <Style TargetType="{x:Type ContentControl}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+        </DocumentViewer.Resources>
+    </DocumentViewer>
+</Window>

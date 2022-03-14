@@ -1,0 +1,185 @@
+﻿<UserControl
+    x:Class="WaybillApp.View.CodingView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:component="clr-namespace:WaybillApp.Component"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="clr-namespace:WaybillApp.Data"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="http://prismlibrary.com/"
+    xmlns:prop="clr-namespace:WaybillApp.Properties"
+    x:Name="UserControl"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    FlowDirection="RightToLeft"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="component:TextInputComponent">
+            <Setter Property="Margin" Value="28,4" />
+        </Style>
+        <Style
+            x:Key="AddItem"
+            BasedOn="{StaticResource MaterialDesignFloatingActionButton}"
+            TargetType="{x:Type Button}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Background" Value="DodgerBlue" />
+            <Setter Property="BorderBrush" Value="DodgerBlue" />
+            <Setter Property="Margin" Value="8" />
+
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <materialDesign:PackIcon
+                            Width="24"
+                            Height="24"
+                            Kind="Add" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style
+            x:Key="DeleteItem"
+            BasedOn="{StaticResource MaterialDesignFloatingActionButton}"
+            TargetType="{x:Type Button}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Background" Value="Red" />
+            <Setter Property="BorderBrush" Value="Red" />
+            <Setter Property="Width" Value="28" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            Kind="Delete" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <TabControl>
+        <TabItem
+            Height="50"
+            MinWidth="100"
+            Header="{x:Static prop:Resources.CityString}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <DataGrid ItemsSource="{x:Static data:LocalData.LocationsList}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Code}"
+                            Header="کد"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding City}"
+                            Header="نام شهر"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Discharge}"
+                            Header="محل تخلیه"
+                            IsReadOnly="True" />
+                        <DataGridTemplateColumn Header="حذف">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Command="{Binding Path=DataContext.DeleteItemCommand, ElementName=UserControl}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource DeleteItem}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button
+                    Grid.Row="1"
+                    Command="{Binding OpenDialogCommand}"
+                    CommandParameter="LocationDialog"
+                    Style="{StaticResource AddItem}"/>
+            </Grid>
+        </TabItem>
+        <TabItem MinWidth="100" Header="مشتری">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <DataGrid ItemsSource="{x:Static data:LocalData.CustomersList}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Code}"
+                            Header="کد"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding FullName}"
+                            Header="نام فرد"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding PhoneNumber}"
+                            Header="شماره تلفن"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding NationalId}"
+                            Header="کد ملی"
+                            IsReadOnly="True" />
+                        <DataGridTemplateColumn Header="حذف">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Command="{Binding Path=DataContext.DeleteItemCommand, ElementName=UserControl}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource DeleteItem}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button
+                    Grid.Row="1"
+                    Command="{Binding OpenDialogCommand}"
+                    CommandParameter="CustomerDialog"
+                    Style="{StaticResource AddItem}" />
+            </Grid>
+        </TabItem>
+        <TabItem MinWidth="100" Header="کالا">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <DataGrid ItemsSource="{x:Static data:LocalData.WaresList}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Code}"
+                            Header="کد"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="نام کالا"
+                            IsReadOnly="True" />
+                        <DataGridTemplateColumn Header="حذف">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Command="{Binding Path=DataContext.DeleteItemCommand, ElementName=UserControl}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource DeleteItem}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button
+                    Grid.Row="1"
+                    Command="{Binding OpenDialogCommand}"
+                    CommandParameter="WareDialog"
+                    Style="{StaticResource AddItem}" />
+            </Grid>
+        </TabItem>
+    </TabControl>
+</UserControl>

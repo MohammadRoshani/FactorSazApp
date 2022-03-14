@@ -1,0 +1,266 @@
+﻿<UserControl
+    x:Class="WaybillApp.View.InboundInvoiceView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:component="clr-namespace:WaybillApp.Component"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="clr-namespace:WaybillApp.Data"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="http://prismlibrary.com/"
+    xmlns:view="clr-namespace:WaybillApp.View"
+    d:DesignHeight="1000"
+    d:DesignWidth="900"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    FlowDirection="RightToLeft"
+    FontSize="24"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style BasedOn="{StaticResource MaterialDesignGroupBox}" TargetType="{x:Type GroupBox}">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Margin" Value="16" />
+            <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth3" />
+            <Setter Property="HeaderTemplate" Value="{StaticResource GroupBoxDataTemplate}" />
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Margin" Value="0,8" />
+            <Setter Property="materialDesign:ComboBoxAssist.ClassicMode" Value="True" />
+            <Setter Property="IsEditable" Value="True" />
+            <Setter Property="Width" Value="110" />
+
+            <Setter Property="FontFamily" Value="/WaybillApp;component/Fonts/#IRAN Sans" />
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <GroupBox Header="مشخصات بارنامه">
+                    <WrapPanel>
+                        <component:TextInputComponent
+                            Margin="0,0,24,0"
+                            ContentTextAlignment="Right"
+                            Kind="ConfirmationNumber"
+                            Label="شماره بارنامه :"
+                            Text="{Binding BillWayCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock
+                            Margin="8"
+                            VerticalAlignment="Center"
+                            Text="زمان ورود به انبار :" />
+                        <component:TimeComponent Time="{Binding InboundTime, Mode=TwoWay}" />
+                        <component:CalendarComponent Margin="16,0,0,0" Date="{Binding InboundDate, Mode=TwoWay}" />
+                    </WrapPanel>
+                </GroupBox>
+                <GroupBox Header="راننده">
+                    <WrapPanel>
+                        <component:SelectCodeComponent
+                            Margin="0,0,24,0"
+                            ContentMinWidth="50"
+                            DataGridColumnCollection="{StaticResource CustomersColumnCollection}"
+                            Header="راننده"
+                            Items="{x:Static data:LocalData.CustomersList}"
+                            Kind="Qrcode"
+                            Label="کد :"
+                            Text="{Binding DriverCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <component:TextInputComponent
+                            Margin="0,0,24,0"
+                            ContentMinWidth="350"
+                            Kind="BusSide"
+                            Label="نام راننده :"
+                            Text="{Binding DriverName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </WrapPanel>
+                </GroupBox>
+                <GroupBox Header="مبدا">
+                    <WrapPanel>
+                        <component:SelectCodeComponent
+                            Margin="0,0,24,0"
+                            ContentMinWidth="50"
+                            DataGridColumnCollection="{StaticResource LocationsColumnCollection}"
+                            Header="مبدا"
+                            Items="{x:Static data:LocalData.LocationsList}"
+                            Kind="Qrcode"
+                            Label="کد :"
+                            Text="{Binding OriginCityCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <component:TextInputComponent
+                            Margin="0,0,24,0"
+                            ContentMinWidth="350"
+                            Kind="CityVariantOutline"
+                            Label="شهر :"
+                            Text="{Binding OriginCityName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </WrapPanel>
+                </GroupBox>
+                <GroupBox Header="مشخصات صاحب کالا">
+                    <WrapPanel>
+                        <component:SelectCodeComponent
+                            Margin="0,0,24,0"
+                            ContentMinWidth="50"
+                            DataGridColumnCollection="{StaticResource CustomersColumnCollection}"
+                            Header="صاحب کالا"
+                            Items="{x:Static data:LocalData.CustomersList}"
+                            Kind="Qrcode"
+                            Label="کد :"
+                            Text="{Binding OwnerCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <component:TextInputComponent
+                            Margin="0,0,24,0"
+                            ContentMinWidth="350"
+                            Kind="HumanHandsdown"
+                            Label="صاحب کالا :"
+                            Text="{Binding OwnerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <component:TextInputComponent
+                            Margin="0,0,24,0"
+                            ContentMinWidth="350"
+                            Kind="Phone"
+                            Label="تلفن :"
+                            Text="{Binding OwnerPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </WrapPanel>
+                </GroupBox>
+                <GroupBox Header="مشخصات کالا">
+                    <WrapPanel Orientation="Horizontal">
+                        <component:SelectCodeComponent
+                            Margin="0,0,24,0"
+                            ContentMinWidth="50"
+                            DataGridColumnCollection="{StaticResource WaresColumnCollection}"
+                            Header="کالا"
+                            Items="{x:Static data:LocalData.WaresList}"
+                            Kind="Qrcode"
+                            Label="کد :"
+                            Text="{Binding WareCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <component:TextInputComponent
+                            Margin="0,0,24,0"
+                            Kind="Cube"
+                            Label="نام :"
+                            Text="{Binding WareName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <component:ComboBoxInputComponent
+                            Margin="0,0,24,0"
+                            Items="{x:Static data:ConstantManager.WareCount}"
+                            Kind="Counter"
+                            Label="تعداد :"
+                            Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <component:ComboBoxInputComponent
+                            Margin="0,0,24,0"
+                            ContentMinWidth="100"
+                            Items="{x:Static data:ConstantManager.Costs}"
+                            Kind="CashMultiple"
+                            Label="مبلغ کرایه :"
+                            Text="{Binding Fare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </WrapPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Button
+                Margin="8"
+                HorizontalAlignment="Left"
+                Background="Red"
+                BorderBrush="Red"
+                Command="{Binding CancelCommand}"
+                CommandTarget="{Binding Path=GlobalDialogHost, RelativeSource={RelativeSource AncestorType={x:Type view:MainWindow}}}"
+                Style="{StaticResource MaterialDesignFloatingActionButton}">
+                <materialDesign:PackIcon
+                    Width="24"
+                    Height="24"
+                    Kind="Close" />
+            </Button>
+            <Button
+                Margin="8"
+                HorizontalAlignment="Left"
+                Background="DodgerBlue"
+                BorderBrush="DodgerBlue"
+                Click="Print_OnClick"
+                CommandTarget="{Binding Path=GlobalDialogHost, RelativeSource={RelativeSource AncestorType={x:Type view:MainWindow}}}"
+                Style="{StaticResource MaterialDesignFloatingActionButton}"
+                Visibility="Collapsed">
+                <materialDesign:PackIcon
+                    Width="24"
+                    Height="24"
+                    Kind="Printer" />
+            </Button>
+            <Button
+                Margin="8"
+                HorizontalAlignment="Left"
+                Background="DodgerBlue"
+                BorderBrush="DodgerBlue"
+                Command="{Binding SendSmsCommand}"
+                CommandTarget="{Binding Path=GlobalDialogHost, RelativeSource={RelativeSource AncestorType={x:Type view:MainWindow}}}"
+                Style="{StaticResource MaterialDesignFloatingActionButton}"
+                Visibility="Collapsed">
+                <materialDesign:PackIcon
+                    Width="24"
+                    Height="24"
+                    Kind="Sms" />
+            </Button>
+            <Button
+                Margin="8"
+                HorizontalAlignment="Left"
+                Background="Green"
+                BorderBrush="Green"
+                Click="ButtonClick"
+                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                CommandTarget="{Binding Path=GlobalDialogHost, RelativeSource={RelativeSource AncestorType={x:Type view:MainWindow}}}"
+                Style="{StaticResource MaterialDesignFloatingActionButton}">
+                <Button.CommandParameter>
+                    <StackPanel Margin="16">
+                        <TextBlock
+                            Margin="16"
+                            HorizontalAlignment="Center"
+                            Text="فاکتور ذخیره شد." />
+                        <TextBlock Margin="16" HorizontalAlignment="Center">
+                            <Run Text="شماره فاکتور: " />
+                            <Run Text="{Binding BillWayCode}" />
+                        </TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                Margin="4"
+                                HorizontalAlignment="Center"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                Content="ویرایش"
+                                IsCancel="True" />
+                            <Button
+                                Margin="4"
+                                HorizontalAlignment="Center"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                Content="بارنامه جدید"
+                                IsCancel="True" />
+                            <Button
+                                Margin="4"
+                                HorizontalAlignment="Center"
+                                Click="Print_OnClick"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                Content="پرینت"
+                                IsCancel="True" />
+                        </StackPanel>
+                    </StackPanel>
+                </Button.CommandParameter>
+                <materialDesign:PackIcon
+                    Width="24"
+                    Height="24"
+                    Kind="Check" />
+            </Button>
+            <Button
+                Margin="8"
+                HorizontalAlignment="Left"
+                Background="BlueViolet"
+                BorderBrush="BlueViolet"
+                Command="{Binding CancelCommand}"
+                CommandTarget="{Binding Path=GlobalDialogHost, RelativeSource={RelativeSource AncestorType={x:Type view:MainWindow}}}"
+                Style="{StaticResource MaterialDesignFloatingActionButton}">
+                <materialDesign:PackIcon
+                    Width="24"
+                    Height="24"
+                    Kind="AddBox" />
+            </Button>
+        </StackPanel>
+    </Grid>
+
+</UserControl>

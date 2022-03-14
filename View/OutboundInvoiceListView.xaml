@@ -1,0 +1,210 @@
+﻿<UserControl
+    x:Class="WaybillApp.View.OutboundInvoiceListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:component="clr-namespace:WaybillApp.Component"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="http://prismlibrary.com/"
+    x:Name="UserControl"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    FlowDirection="RightToLeft"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style
+            x:Key="DataGridButtonStyle"
+            BasedOn="{StaticResource MaterialDesignRaisedButton}"
+            TargetType="{x:Type Button}">
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Margin" Value="4,0" />
+            <Setter Property="Background" Value="DodgerBlue" />
+            <Setter Property="BorderBrush" Value="DodgerBlue" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="339*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Expander
+            Margin="8"
+            Background="Gainsboro"
+            Header="فیلتر">
+            <StackPanel Margin="20,0">
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock
+                        Width="90"
+                        Margin="8"
+                        VerticalAlignment="Center"
+                        Text="از تاریخ :" />
+                    <component:CalendarComponent Margin="0,0,24,0" Date="{Binding FromDateFilter, Mode=TwoWay}" />
+                    <TextBlock
+                        Width="90"
+                        Margin="8"
+                        VerticalAlignment="Center"
+                        Text="تا تاریخ :" />
+                    <component:CalendarComponent Date="{Binding ToDateFilter, Mode=TwoWay}" />
+                </WrapPanel>
+                <WrapPanel>
+                    <component:TextInputComponent
+                        Margin="0,0,24,0"
+                        ContentTextAlignment="Right"
+                        Kind="ConfirmationNumber"
+                        Label="شماره بارنامه :"
+                        Text="{Binding BillCodeFilter, Mode=TwoWay}" />
+
+                    <component:TextInputComponent
+                        Margin="0,0,24,0"
+                        Kind="Account"
+                        Label="نام فرستنده :"
+                        Text="{Binding SenderFilter, Mode=TwoWay}" />
+                    <component:TextInputComponent
+                        Margin="0,0,24,0"
+                        Kind="Account"
+                        Label="نام گیرنده :"
+                        Text="{Binding ReceiverFilter, Mode=TwoWay}" />
+                    <component:TextInputComponent
+                        Margin="0,0,24,0"
+                        Kind="Location"
+                        Label="مقصد :"
+                        Text="{Binding LocationFilter, Mode=TwoWay}" />
+                </WrapPanel>
+                <StackPanel
+                    Margin="8"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="0,0,4,0"
+                        Background="Orange"
+                        BorderBrush="Orange"
+                        Command="{Binding ClearFilterCommand}"
+                        Content="پاک کردن فیلتر" />
+                    <Button
+                        Margin="4,0,0,0"
+                        Command="{Binding FilterCommand}"
+                        Content="اعمال فیلتر" />
+                </StackPanel>
+            </StackPanel>
+        </Expander>
+        <DataGrid
+            Name="DataGrid"
+            Grid.Row="1"
+            ItemsSource="{Binding Items}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="80"
+                    Binding="{Binding Id}"
+                    Header="ردیف"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="112"
+                    Binding="{Binding BillWayCode}"
+                    Header="ش بارنامه"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="112"
+                    Binding="{Binding Date, Converter={StaticResource ToPersianDateConverter}, ConverterParameter='yyyy/MM/dd'}"
+                    Header="تاریخ"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="80"
+                    Binding="{Binding Time, StringFormat=\{0:HH:mm\}}"
+                    Header="ساعت"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding SenderFullName}"
+                    Header="فرستنده"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding ReceiverFullName}"
+                    Header="گیرنده"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding DestinationCity}"
+                    Header=" شهر مقصد"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding DestinationDischarge}"
+                    Header="محل تخلیه"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="112"
+                    Binding="{Binding Fare}"
+                    Header="هزینه"
+                    IsReadOnly="True" />
+                <DataGridTemplateColumn Width="60" Header="">
+                    <DataGridTemplateColumn.CellTemplate >
+                        <DataTemplate>
+                            <materialDesign:PopupBox
+                                Width="32"
+                                Height="32"
+                                HorizontalAlignment="Center"
+                                PopupMode="MouseOver"
+                                PlacementMode="BottomAndAlignRightEdges"
+                                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}">
+                                <StackPanel Orientation="Horizontal">
+
+                                    <Button
+                                        Background="Red"
+                                        BorderBrush="Red"
+                                        Command="{Binding Path=DataContext.DeleteCommand, ElementName=UserControl}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource DataGridButtonStyle}">
+                                        <materialDesign:PackIcon
+                                            Width="24"
+                                            Height="24"
+                                            Kind="Delete" />
+                                    </Button>
+                                    <Button
+                                        Command="{Binding Path=DataContext.SendSmsCommand, ElementName=UserControl}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource DataGridButtonStyle}">
+                                        <materialDesign:PackIcon
+                                            Width="24"
+                                            Height="24"
+                                            Kind="Sms" />
+                                    </Button>
+                                    <Button
+                                        Command="{Binding Path=DataContext.PrintCommand, ElementName=UserControl}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource DataGridButtonStyle}">
+                                        <materialDesign:PackIcon
+                                            Width="24"
+                                            Height="24"
+                                            Kind="Printer" />
+                                    </Button>
+                                    <Button
+                                        Command="{Binding Path=DataContext.EditCommand, ElementName=UserControl}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource DataGridButtonStyle}">
+                                        <materialDesign:PackIcon
+                                            Width="24"
+                                            Height="24"
+                                            Kind="Edit" />
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <component:PaginationComponent
+            Grid.Row="2"
+            Margin="8"
+            FlowDirection="LeftToRight"
+            ItemsCount="{Binding ItemsCount, Mode=TwoWay}"
+            PageSize="{Binding PageSize, Mode=TwoWay}"
+            SelectedPageIndex="{Binding SelectedPageIndex, Mode=TwoWay}"
+            UpdatePageAction="OnUpdatePageAction" />
+
+    </Grid>
+</UserControl>
